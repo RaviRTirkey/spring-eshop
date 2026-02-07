@@ -55,7 +55,7 @@ public class AuthenticationService {
             );
         } catch (BadCredentialsException e) {
             // This ensures the user gets a 401/400 instead of a 500
-            throw new BusinessException("Invalid email or password");
+            throw new BadCredentialsException("Invalid email or password");
         }
 
         var user = repository.findByEmail(request.getEmail())
