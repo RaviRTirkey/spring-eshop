@@ -1,12 +1,25 @@
-# Step 1: Use a lightweight JDK runtime
-FROM eclipse-temurin:17-jdk-alpine
+# ---------- Stage 1: Build ----------
+FROM eclipse-temurin:17-jdk-alpine AS builder
 
-# Step 2: Set the working directory inside the container
 WORKDIR /app
 
-# Step 3: Copy the JAR file from your host to the container
-# Replace 'target/*.jar' with 'build/libs/*.jar' if using Gradle
-COPY target/*.jar app.jar
+# Copy everything
+COPY . .
 
-# Step 4: Run the application
+# If using Maven Wrapper
+RUN ./mvnw clean package -DskipTests
+
+# If NOT using mvnw, use:
+# RUN mvn clean package -DskipTests
+
+
+# ---------- Stage 2: Run ----------
+FROM eclipse-temurin:17-jdk-alpine
+
+WORKDIR /app
+
+COPY --from=builder /app/target/*.jar app.jar
+
+EXPOSE 8080
+
 ENTRYPOINT ["java", "-jar", "app.jar"]

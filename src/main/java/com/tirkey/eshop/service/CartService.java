@@ -52,6 +52,45 @@ public class CartService {
     }
 
     @Transactional
+    public Cart updateItemQuantity(User user, Long productId, Integer quantity) {
+        Cart cart = getCartByUser(user);
+        CartItem cartItem = cart.getItems().stream().filter(item ->
+                        item.getProduct()
+                                .getId()
+                                .equals(productId))
+                .findFirst()
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+
+        if (quantity <= 0) {
+            return removeItemFromCart(user, productId);
+        }
+        cartItem.setQuantity(quantity);
+        cartRepository.save(cart);
+
+        return cart;
+
+    }
+
+    public Cart removeItemFromCart(User user, Long productId) {
+        Cart cart = getCartByUser(user);
+
+
+        boolean removed = cart.getItems().removeIf(item -> item
+                .getProduct()
+                .getId()
+                .equals(productId));
+
+        if (!removed) {
+            throw new ResourceNotFoundException("Product not found in cart");
+        }
+        
+        cartRepository.save(cart);
+
+        return cart;
+
+    }
+
+    @Transactional
     public void clearCart(User user) {
         Cart cart = getCartByUser(user);
         cart.getItems().clear();

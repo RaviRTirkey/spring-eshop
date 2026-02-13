@@ -15,7 +15,7 @@ public class CartController {
 
     private final CartService cartService;
 
-    @GetMapping
+    @GetMapping("/get")
     public ResponseEntity<CartResponseDTO> getCart(@AuthenticationPrincipal User user) {
         return ResponseEntity.ok(cartService.mapToResponseDTO(cartService.getCartByUser(user)));
     }
@@ -26,5 +26,20 @@ public class CartController {
             @RequestParam Long productId,
             @RequestParam(defaultValue = "1") Integer quantity) {
         return ResponseEntity.ok(cartService.mapToResponseDTO(cartService.addItemToCart(user, productId, quantity)));
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<CartResponseDTO> updateQuantity(
+            @AuthenticationPrincipal User user,
+            @RequestParam Long productId,
+            @RequestParam Integer quantity) {
+        return ResponseEntity.ok(cartService.mapToResponseDTO(cartService.updateItemQuantity(user, productId, quantity)));
+    }
+
+    @DeleteMapping("/remove/{productId}")
+    public ResponseEntity<CartResponseDTO> removeItem(
+            @AuthenticationPrincipal User user,
+            @PathVariable Long productId) {
+        return ResponseEntity.ok(cartService.mapToResponseDTO(cartService.removeItemFromCart(user, productId)));
     }
 }
