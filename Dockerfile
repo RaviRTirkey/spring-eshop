@@ -3,14 +3,13 @@ FROM eclipse-temurin:17-jdk-alpine AS builder
 
 WORKDIR /app
 
-# Copy everything
 COPY . .
 
-# If using Maven Wrapper
-RUN ./mvnw clean package -DskipTests
+# Give execution permission to mvnw
+RUN chmod +x mvnw
 
-# If NOT using mvnw, use:
-# RUN mvn clean package -DskipTests
+# Run Maven wrapper
+RUN ./mvnw clean package -DskipTests
 
 
 # ---------- Stage 2: Run ----------
