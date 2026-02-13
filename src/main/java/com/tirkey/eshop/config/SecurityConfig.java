@@ -24,6 +24,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable) // Disable CSRF for stateless APIs
+                .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS,"/api/v1/auth/**").permitAll() // White-list auth endpoints
                         .requestMatchers(HttpMethod.OPTIONS,"/api/v1/products/**").permitAll() // Allow guest browsing
