@@ -28,6 +28,16 @@ public class CategoryService {
         return categoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + id));
     }
+    
+    public Category getCategoryByName(String name) {
+        Category category = categoryRepository.findByNameIgnoreCase(name);
+
+        if (category == null) {
+            CategoryResponseDTO categoryResponseDTO = createCategory(new CategoryRequestDTO(null, name));
+            category = getCategoryById(categoryResponseDTO.id());
+        }
+        return category;
+    }
 
     @Transactional
     public CategoryResponseDTO createCategory(CategoryRequestDTO categoryRequestDTO) {

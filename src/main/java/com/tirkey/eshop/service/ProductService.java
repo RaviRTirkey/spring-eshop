@@ -1,5 +1,7 @@
 package com.tirkey.eshop.service;
 
+import com.tirkey.eshop.dto.CategoryRequestDTO;
+import com.tirkey.eshop.dto.CategoryResponseDTO;
 import com.tirkey.eshop.dto.ProductRequestDTO;
 import com.tirkey.eshop.dto.ProductResponseDTO;
 import com.tirkey.eshop.exception.BusinessException;
@@ -51,7 +53,8 @@ public class ProductService {
     // --- DTO MAPPING METHODS FOR CONTROLLERS ---
     @Transactional
     public ProductResponseDTO createProduct(ProductRequestDTO dto) {
-        Category category = categoryService.getCategoryById(dto.categoryId());
+        Category category = categoryService.getCategoryByName(dto.categoryName());
+        
         Product product = Product.builder()
                 .name(dto.name())
                 .description(dto.description())
@@ -71,7 +74,7 @@ public class ProductService {
         existingProduct.setDescription(dto.description());
         existingProduct.setPrice(dto.price());
         existingProduct.setStockQuantity(dto.stockQuantity());
-        existingProduct.setCategory(categoryService.getCategoryById(dto.categoryId()));
+        existingProduct.setCategory(categoryService.getCategoryByName(dto.categoryName()));
         return mapToResponseDTO(saveProduct(existingProduct));
     }
 

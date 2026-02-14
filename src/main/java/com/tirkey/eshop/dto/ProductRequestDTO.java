@@ -17,8 +17,8 @@ public record ProductRequestDTO(
         @Min(value = 0, message = "Stock cannot be negative")
         Integer stockQuantity,
 
-        String imageUrl, // Restored
+        String imageUrl,
 
-        @NotNull(message = "Category ID is required")
-        Long categoryId
+        @NotNull(message = "Category Name is required")
+        String categoryName
 ) {}
