@@ -1,7 +1,5 @@
 package com.tirkey.eshop.service;
 
-import com.tirkey.eshop.dto.CategoryRequestDTO;
-import com.tirkey.eshop.dto.CategoryResponseDTO;
 import com.tirkey.eshop.dto.ProductRequestDTO;
 import com.tirkey.eshop.dto.ProductResponseDTO;
 import com.tirkey.eshop.exception.BusinessException;
@@ -80,7 +78,7 @@ public class ProductService {
 
     public ProductResponseDTO mapToResponseDTO(Product product) {
         return new ProductResponseDTO(
-                product.getId(),
+                product.getProductId(),
                 product.getName(),
                 product.getDescription(),
                 product.getPrice(),
