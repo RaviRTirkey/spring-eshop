@@ -102,6 +102,7 @@ public class CartService {
                 .map(item -> new CartItemResponseDTO(
                         item.getProduct().getId(),
                         item.getProduct().getName(),
+                        item.getProduct().getImageUrl(),
                         item.getProduct().getPrice(),
                         item.getQuantity()
                 )).toList();
