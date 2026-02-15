@@ -34,7 +34,7 @@ public class CartService {
 
         // Logic to update quantity if product already exists in cart
         Optional<CartItem> existingItem = cart.getItems().stream()
-                .filter(item -> item.getProduct().getProductId().equals(productId))
+                .filter(item -> item.getProduct().getId().equals(productId))
                 .findFirst();
 
         if (existingItem.isPresent()) {
@@ -56,7 +56,7 @@ public class CartService {
         Cart cart = getCartByUser(user);
         CartItem cartItem = cart.getItems().stream().filter(item ->
                         item.getProduct()
-                                .getProductId()
+                                .getId()
                                 .equals(productId))
                 .findFirst()
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
@@ -77,7 +77,7 @@ public class CartService {
 
         boolean removed = cart.getItems().removeIf(item -> item
                 .getProduct()
-                .getProductId()
+                .getId()
                 .equals(productId));
 
         if (!removed) {
@@ -100,7 +100,7 @@ public class CartService {
     public CartResponseDTO mapToResponseDTO(Cart cart) {
         List<CartItemResponseDTO> itemDTOs = cart.getItems().stream()
                 .map(item -> new CartItemResponseDTO(
-                        item.getProduct().getProductId(),
+                        item.getProduct().getId(),
                         item.getProduct().getName(),
                         item.getProduct().getImageUrl(),
                         item.getProduct().getPrice(),
@@ -111,6 +111,6 @@ public class CartService {
                 .map(item -> item.price().multiply(BigDecimal.valueOf(item.quantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        return new CartResponseDTO(cart.getCartId(), itemDTOs, total);
+        return new CartResponseDTO(cart.getId(), itemDTOs, total);
     }
 }

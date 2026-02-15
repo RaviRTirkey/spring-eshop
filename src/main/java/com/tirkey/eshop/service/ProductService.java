@@ -78,7 +78,7 @@ public class ProductService {
 
     public ProductResponseDTO mapToResponseDTO(Product product) {
         return new ProductResponseDTO(
-                product.getProductId(),
+                product.getId(),
                 product.getName(),
                 product.getDescription(),
                 product.getPrice(),

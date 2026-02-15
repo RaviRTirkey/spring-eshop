@@ -70,7 +70,7 @@ public class OrderService {
     public OrderResponseDTO mapToResponseDTO(Order order) {
         List<OrderItemDTO> items = order.getOrderItems().stream()
                 .map(i -> new OrderItemDTO(
-                        i.getProduct().getProductId(),
+                        i.getProduct().getId(),
                         i.getProduct().getName(),
                         i.getQuantity(),
                         i.getPriceAtPurchase()))
