@@ -26,5 +26,5 @@ public class OrderItem {
     private Product product;
 
     private Integer quantity;
-    private BigDecimal priceAtPurchase; // Snapshot of price for financial accuracy
+    private BigDecimal priceAtPurchase; 
 }

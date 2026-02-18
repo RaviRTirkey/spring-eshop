@@ -1,5 +1,6 @@
 package com.tirkey.eshop.controller;
 
+import com.tirkey.eshop.dto.AddressRequestDTO;
 import com.tirkey.eshop.dto.OrderResponseDTO;
 import com.tirkey.eshop.model.Order;
 import com.tirkey.eshop.model.User;
@@ -7,10 +8,7 @@ import com.tirkey.eshop.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,9 +18,9 @@ import java.util.List;
 public class OrderController {
     private final OrderService orderService;
 
-    @PostMapping("/checkout")
-    public ResponseEntity<OrderResponseDTO> checkout(@AuthenticationPrincipal User user) {
-        Order order = orderService.placeOrder(user);
+    @PostMapping("/placeOrder")
+    public ResponseEntity<OrderResponseDTO> placeOrder(@AuthenticationPrincipal User user, @RequestBody AddressRequestDTO address) {
+        Order order = orderService.placeOrder(user, address);
         return ResponseEntity.ok(orderService.mapToResponseDTO(order));
     }
 

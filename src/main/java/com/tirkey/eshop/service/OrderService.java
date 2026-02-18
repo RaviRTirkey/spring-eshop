@@ -1,5 +1,6 @@
 package com.tirkey.eshop.service;
 
+import com.tirkey.eshop.dto.AddressRequestDTO;
 import com.tirkey.eshop.exception.BusinessException;
 import com.tirkey.eshop.exception.ResourceNotFoundException;
 import com.tirkey.eshop.model.*;
@@ -23,7 +24,7 @@ public class OrderService {
     private final ProductRepository productRepository;
 
     @Transactional
-    public Order placeOrder(User user) {
+    public Order placeOrder(User user, AddressRequestDTO address) {
         Cart cart = cartService.getCartByUser(user);
         if (cart.getItems().isEmpty()) {
             throw new BusinessException("Cannot place order with empty cart");
@@ -33,6 +34,12 @@ public class OrderService {
                 .user(user)
                 .orderDate(LocalDateTime.now())
                 .status("PENDING")
+                .name(address.name())
+                .phone(address.phone())
+                .address(address.address())
+                .city(address.city())
+                .state(address.state())
+                .pincode(address.pincode())
                 .build();
 
         List<OrderItem> orderItems = cart.getItems().stream().map(cartItem -> {
@@ -72,6 +79,7 @@ public class OrderService {
                 .map(i -> new OrderItemDTO(
                         i.getProduct().getId(),
                         i.getProduct().getName(),
+                        i.getProduct().getImageUrl(),
                         i.getQuantity(),
                         i.getPriceAtPurchase()))
                 .toList();

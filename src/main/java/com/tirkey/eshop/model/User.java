@@ -32,11 +32,10 @@ public class User implements UserDetails {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private Role role; // We'll define this Enum below
+    private Role role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // Returns the role prefixed with ROLE_ (required by Spring Security)
         return List.of(new SimpleGrantedAuthority(role.name()));
     }
 

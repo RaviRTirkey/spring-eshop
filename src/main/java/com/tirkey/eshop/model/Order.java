@@ -28,4 +28,11 @@ public class Order {
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch =  FetchType.LAZY)
     private List<OrderItem> orderItems;
+    
+    private String name;
+    private String phone;
+    private String address;
+    private String city;
+    private String state;
+    private String pincode;
 }
