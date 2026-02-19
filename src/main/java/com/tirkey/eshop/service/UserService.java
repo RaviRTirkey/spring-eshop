@@ -18,6 +18,7 @@ import org.jspecify.annotations.Nullable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -78,7 +79,7 @@ public class UserService {
     }
 
 
-    public @Nullable String uploadProfilePicture(User user, MultipartFile file){
+    public @Nullable UserResponseDTO uploadProfilePicture(User user, MultipartFile file){
 
         if (file == null || file.isEmpty()) {
             throw new IllegalArgumentException("File must not be empty");
@@ -94,7 +95,8 @@ public class UserService {
 
             user.setProfilePic(imageUrl);
             repository.save(user);
-            return imageUrl;
+
+            return new UserResponseDTO(user.getName(),  user.getEmail(), user.getProfilePic());
         }
         
         catch (IOException e) {

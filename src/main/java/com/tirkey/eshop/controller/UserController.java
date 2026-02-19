@@ -30,7 +30,7 @@ public class UserController {
     }
     
     @PostMapping("/profile/upload")
-    public ResponseEntity<String> uploadProfilePicture(@AuthenticationPrincipal User user, @RequestParam MultipartFile file){
+    public ResponseEntity<UserResponseDTO> uploadProfilePicture(@AuthenticationPrincipal User user, @RequestParam MultipartFile file){
         return ResponseEntity.ok(service.uploadProfilePicture(user, file));
     }
     
