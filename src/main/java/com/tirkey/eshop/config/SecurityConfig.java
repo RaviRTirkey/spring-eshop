@@ -24,7 +24,7 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable) // Disable CSRF for stateless APIs
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/auth/**").permitAll() // White-list auth endpoints
+                        .requestMatchers("/api/v1/user/auth/**").permitAll() // White-list auth endpoints
                         .requestMatchers("/api/v1/products/**").permitAll() // Allow guest browsing
                         .requestMatchers("/api/v1/admin/**").hasRole("ADMIN") // Protect admin routes
                         .anyRequest().authenticated() // All other requests need a token
