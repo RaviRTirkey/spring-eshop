@@ -38,4 +38,6 @@ public class UserController {
     public ResponseEntity<UserResponseDTO> getUser(@AuthenticationPrincipal User user){
         return ResponseEntity.ok(service.getUserDetails(user));
     }
+    
+    //
 }
