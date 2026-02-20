@@ -8,6 +8,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -94,6 +95,15 @@ public class GlobalExceptionHandler {
                 null
         );
         return new ResponseEntity<>(error, HttpStatus.SERVICE_UNAVAILABLE);
+    }
+
+    @ExceptionHandler(MaxUploadSizeExceededException .class)
+    public ResponseEntity<String> handleMaxSizeException(
+            MaxUploadSizeExceededException ex) {
+
+        return ResponseEntity
+                .badRequest()
+                .body("File too large. Max allowed size is 5MB.");
     }
 
 

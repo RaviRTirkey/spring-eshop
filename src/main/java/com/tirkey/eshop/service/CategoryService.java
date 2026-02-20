@@ -5,11 +5,18 @@ import com.tirkey.eshop.dto.CategoryResponseDTO;
 import com.tirkey.eshop.exception.BusinessException;
 import com.tirkey.eshop.exception.ResourceNotFoundException;
 import com.tirkey.eshop.model.Category;
+import com.tirkey.eshop.model.Product;
 import com.tirkey.eshop.repository.CategoryRepository;
+import com.tirkey.eshop.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -17,11 +24,19 @@ import java.util.List;
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
+    private final ProductRepository productRepository;
 
     public List<CategoryResponseDTO> getAllCategories() {
-        return categoryRepository.findAll().stream()
-                .map(this::mapToResponseDTO)
-                .toList();
+        List<Category> categories = categoryRepository.findAll();
+        
+        List<CategoryResponseDTO> categoryResponseDTOS = new ArrayList<>();
+        for (Category category : categories) {
+            categoryResponseDTOS.add(
+                    mapToResponseDTO(category)
+            );
+        }
+        
+        return categoryResponseDTOS;
     }
 
     public Category getCategoryById(Long id) {
@@ -33,7 +48,7 @@ public class CategoryService {
         Category category = categoryRepository.findByNameIgnoreCase(name);
 
         if (category == null) {
-            CategoryResponseDTO categoryResponseDTO = createCategory(new CategoryRequestDTO(null, name));
+            CategoryResponseDTO categoryResponseDTO = createCategory(new CategoryRequestDTO(null, name, null));
             category = getCategoryById(categoryResponseDTO.id());
         }
         return category;
@@ -47,12 +62,13 @@ public class CategoryService {
         }
         Category category = new Category();
         category.setName(categoryRequestDTO.name());
+        category.setImageUrl(categoryRequestDTO.imageUrl());
         
         Category savedCategory = categoryRepository.save(category);
         return mapToResponseDTO(savedCategory);
     }
 
     public CategoryResponseDTO mapToResponseDTO(Category category) {
-        return new CategoryResponseDTO(category.getId(), category.getName());
+        return new CategoryResponseDTO(category.getId(), category.getName(), category.getImageUrl());
     }
 }

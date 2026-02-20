@@ -2,5 +2,6 @@ package com.tirkey.eshop.dto;
 
 public record CategoryRequestDTO(
         Long id,
-        String name
+        String name,
+        String imageUrl
 ) {}
