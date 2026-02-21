@@ -9,6 +9,7 @@ import com.tirkey.eshop.model.Product;
 import com.tirkey.eshop.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,8 +22,8 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final CategoryService categoryService;
-
-    // --- RESTORED PREVIOUS METHODS ---
+    
+    
     public Page<Product> getAllActiveProducts(String name, BigDecimal min, BigDecimal max, Pageable pageable) {
         return productRepository.findByActiveTrueAndNameContainingIgnoreCaseAndPriceBetween(name, min, max, pageable);
     }
@@ -86,5 +87,9 @@ public class ProductService {
                 product.getImageUrl(),
                 product.getCategory().getName()
         );
+    }
+
+    public Page<Product> getProductsByCategory(Long categoryId, String name, BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable) {
+        return productRepository.findByCategoryIdAndNameContainingIgnoreCaseAndPriceBetween(categoryId, name, minPrice, maxPrice, pageable);
     }
 }

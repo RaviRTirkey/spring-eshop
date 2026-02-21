@@ -42,4 +42,22 @@ public class ProductController {
     public ResponseEntity<ProductResponseDTO> getProduct(@PathVariable Long id) {
         return ResponseEntity.ok(productService.mapToResponseDTO(productService.getProductById(id)));
     }
+    
+    @GetMapping("/categoryId/{id}")
+    public ResponseEntity<Page<ProductResponseDTO>> getProductsByCategory(
+            @PathVariable Long id,
+            @RequestParam(defaultValue = "") String name,
+            @RequestParam(defaultValue = "0") BigDecimal minPrice,
+            @RequestParam(defaultValue = "1000000") BigDecimal maxPrice,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy
+    ){
+        var productPage = productService.getProductsByCategory(
+                id, name, minPrice, maxPrice, PageRequest.of(page, size, Sort.by(sortBy))
+        );
+        
+        Page<ProductResponseDTO> responsePage = productPage.map(productService::mapToResponseDTO);
+        return ResponseEntity.ok(responsePage);
+    }
 }
